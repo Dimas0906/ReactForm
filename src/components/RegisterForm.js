@@ -1,7 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+// regex
+const checkEmail =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 function RegisterForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [kota, setKota] = useState("");
+  const [provinsi, setProvinsi] = useState("");
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const data = [
+      { firstName: firstName },
+      { lastName: lastName },
+      { email: email },
+      { password: password },
+      { gender: gender },
+      { kota: kota, provinsi: provinsi },
+    ];
+
+    data.forEach((input) => {
+      if (
+        input.firstName === "" ||
+        input.lastName === "" ||
+        input.email === "" ||
+        input.password === "" ||
+        input.gender === "" ||
+        input.kota === "" ||
+        input.provinsi === ""
+      ) {
+        console.log("please fill all input");
+      }
+
+      if (input.email) {
+        if (checkEmail.test(input.email)) {
+          console.log("Invalid Format Email");
+        }
+      }
+
+      if (input.kota !== "" && input.provinsi !== "") {
+        if (input.kota === "Jakarta" && input.provinsi !== "Jakarta") {
+          alert("Daerah tidak sesuai");
+        }
+        if (input.kota === "Bogor" && input.provinsi !== "Jawa Barat") {
+          alert("Daerah tidak sesuai");
+        }
+        if (input.kota === "Depok" && input.provinsi !== "Jawa Barat") {
+          alert("Daerah tidak sesuai");
+        }
+        if (input.kota === "Tanggerang" && input.provinsi !== "Jakarta") {
+          alert("Daerah tidak sesuai");
+        }
+        if (input.kota === "Bekasi" && input.provinsi !== "Jakarta") {
+          alert("Daerah tidak sesuai");
+        }
+      }
+    });
+
+    console.log(data);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setGender("");
+  };
+
   return (
     <div>
       <div className="flex items-center justify-center h-full ">
@@ -9,43 +78,78 @@ function RegisterForm() {
           <div className="text-white mt-5">
             <h1 className="font-bold text-4xl">Register Account</h1>
           </div>
-          <form className="flex flex-col space-y-8 mt-10">
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex flex-col space-y-8 mt-10"
+          >
             <input
+              required
               type="text"
+              name="firstname"
+              value={firstName}
               placeholder="First Name"
               className="border rounded-lg py-3 px-3 text-white bg-gray-700 border-gray-700 placeholder-gray-500"
+              onChange={(e) => setFirstName(e.target.value)}
             />
             <input
+              required
               type="text"
+              name="lastname"
+              value={lastName}
               placeholder="Last Name"
               className="border rounded-lg py-3 px-3 text-white bg-gray-700 border-gray-700 placeholder-gray-500"
+              onChange={(e) => setLastName(e.target.value)}
             />
             <input
+              required
               type="text"
+              name="email"
+              value={email}
               placeholder="Email"
               className="border rounded-lg py-3 px-3 text-white bg-gray-700 border-gray-700 placeholder-gray-500"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
+              required
               type="password"
+              name="password"
+              value={password}
               placeholder="Password"
               className="border rounded-lg py-3 px-3 text-white bg-gray-700 border-gray-700 placeholder-gray-500"
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <div className="flex flex-row justify-around items-center">
-              <div classname="w-1/2">
-                <p className="text-xl font-semibold text-white">Gender :</p>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center">
-                    <input type="radio" value="Male" id="Male" />
-                    <label className="text-xl mx-2 text-white" for="Male">
-                      Male
-                    </label>
-                  </div>
-                  <div className="flex flex-row items-center">
-                    <input type="radio" value="Female" id="Female" />
-                    <label className="text-xl mx-2 text-white" for="Female">
-                      Female
-                    </label>
-                  </div>
+            <div className="flex flex-row justify-center items-center">
+              <div className="w-1/2 flex justify-center items-center flex-col">
+                <p className="text-xl font-semibold text-start text-white">
+                  Gender :
+                </p>
+                <div
+                  className="flex flex-row justify-center items-center"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <input
+                    required
+                    className="ml-2"
+                    id="Male"
+                    type="radio"
+                    name="Male"
+                    value="Male"
+                  />
+                  <label for="Male" className="text-xl text-white mx-2 ">
+                    Male
+                  </label>
+                  <input
+                    required
+                    className="ml-2"
+                    id="Female"
+                    type="radio"
+                    name="Female"
+                    value="Female"
+                  />
+                  <label for="Female" className="text-xl text-white mx-2 ">
+                    Female
+                  </label>
                 </div>
               </div>
               <div className="w-1/2 flex flex-col">
@@ -57,16 +161,18 @@ function RegisterForm() {
                     Kota :
                   </label>
                   <select
+                    required
                     className="px-5 py-2 rounded-md"
                     id="Kota"
                     name="Kota"
                     autoComplete="Kota"
+                    onChange={(e) => setKota(e.target.value)}
                   >
-                    <option>Jakarta</option>
-                    <option>Bogor</option>
-                    <option>Depok</option>
-                    <option>Tanggerang</option>
-                    <option>Bekasi</option>
+                    <option value="Jakarta">Jakarta</option>
+                    <option value="Bogor">Bogor</option>
+                    <option value="Depok">Depok</option>
+                    <option value="Tanggerang">Tanggerang</option>
+                    <option value="Bekasi">Bekasi</option>
                   </select>
                 </div>
                 <div className="flex flex-col my-2">
@@ -77,18 +183,24 @@ function RegisterForm() {
                     Provinsi :
                   </label>
                   <select
+                    required
                     className="px-5 py-2 rounded-md"
                     id="Provinsi"
                     name="Provinsi"
                     autoComplete="Provinsi"
+                    onChange={(e) => setProvinsi(e.target.value)}
                   >
-                    <option>DKI Jakarta</option>
-                    <option>Jawa Barat</option>
+                    <option value="Jakarta">DKI Jakarta</option>
+                    <option value="Jawa Barat">Jawa Barat</option>
                   </select>
                 </div>
               </div>
             </div>
-            <button className="border border-blue-500 bg-blue-500 text-white rounded-lg py-3 font-semibold">
+            <button
+              onClick={handleFormSubmit}
+              type="submit"
+              className="border border-blue-500 bg-blue-500 text-white rounded-lg py-3 font-semibold"
+            >
               Sign up
             </button>
             <p className="text-center text-white">
@@ -104,79 +216,6 @@ function RegisterForm() {
         </div>
       </div>
     </div>
-
-    /* <div className="border-4 border-black rounded-md flex flex-col justify-center items-center bg-blue-300">
-        <div>
-          <h1 className="text-2xl font-bold">Form Register</h1>
-        </div>
-        <div className="flex flex-col">
-          <input
-            className="my-2 border-4 boder-black rounded-sm px-5 py-2 text-xl"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            className="my-2 border-4 boder-black rounded-sm px-5 py-2 text-xl"
-            type="text"
-            placeholder="Last Name"
-          />
-          <input
-            className="my-2 border-4 boder-black rounded-sm px-5 py-2 text-xl"
-            type="text"
-            placeholder="Email Name"
-          />
-          <input
-            className="my-2 border-4 boder-black rounded-sm px-5 py-2 text-xl"
-            type="password"
-            placeholder="Password"
-          />
-          <div className="flex flex-row justify-around items-center">
-            <div classname="w-1/2">
-              <p className="text-xl font-semibold">Gender :</p>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-center">
-                  <input type="radio" value="Male" id="Male" />
-                  <label className="text-xl mx-2" for="Male">
-                    Male
-                  </label>
-                </div>
-                <div className="flex flex-row items-center">
-                  <input type="radio" value="Female" id="Female" />
-                  <label className="text-xl mx-2" for="Female">
-                    Female
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="w-1/2 flex flex-col">
-              <div className="flex flex-col my-2">
-                <label for="Kota" className="text-xl font-semibold">
-                  Kota :
-                </label>
-                <select id="Kota" name="Kota" autoComplete="Kota">
-                  <option>Jakarta</option>
-                  <option>Bogor</option>
-                  <option>Depok</option>
-                  <option>Tanggerang</option>
-                  <option>Bekasi</option>
-                </select>
-              </div>
-              <div className="flex flex-col my-2">
-                <label for="Provinsi" className="text-xl font-semibold">
-                  Provinsi :
-                </label>
-                <select id="Provinsi" name="Provinsi" autoComplete="Provinsi">
-                  <option>DKI Jakarta</option>
-                  <option>Jawa Barat</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <button className="block bg-red-300 px-5 py-2 m-2 rounded-md">
-            Sign Up
-          </button>
-        </div>
-      </div> */
   );
 }
 

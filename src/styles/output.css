@@ -688,6 +688,11 @@ video {
   margin-bottom: 2.5rem;
 }
 
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -726,6 +731,14 @@ video {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
 }
 
 .block {
@@ -986,6 +999,11 @@ video {
   background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+}
+
 .p-0 {
   padding: 0px;
 }
@@ -1200,6 +1218,11 @@ video {
 .hover\:text-green-300:hover {
   --tw-text-opacity: 1;
   color: rgba(110, 231, 183, var(--tw-text-opacity));
+}
+
+.hover\:text-black:hover {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 
 .focus\:border-indigo-500:focus {
